@@ -3,8 +3,9 @@ package com.felipeaugusto.cursomc.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.felipeaugusto.cursomc.domain.Categoria;
+import com.felipeaugusto.cursomc.domain.Cliente;
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
+public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
+
 }
