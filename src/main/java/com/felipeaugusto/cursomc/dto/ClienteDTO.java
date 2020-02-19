@@ -3,7 +3,9 @@ package com.felipeaugusto.cursomc.dto;
 import java.io.Serializable;
 
 import com.felipeaugusto.cursomc.domain.Cliente;
+import com.felipeaugusto.cursomc.services.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable{
 
 	/**
