@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.felipeaugusto.cursomc.services.DBService;
 import com.felipeaugusto.cursomc.services.EmailService;
 import com.felipeaugusto.cursomc.services.MockEmailService;
+import com.felipeaugusto.cursomc.services.SmtpEmailService;
 
 @Configuration
 @Profile("dev")
@@ -18,6 +19,9 @@ public class DevConfig {
 	
 	@Autowired
 	private DBService dbService;
+	
+	@Value("${spring.profiles.active}")
+	private String profileType;
 	
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
@@ -33,6 +37,9 @@ public class DevConfig {
 	
 	@Bean
 	public EmailService emailService() {
+		if("dev".equals(profileType)) {
+			return new SmtpEmailService();
+		}
 		return new MockEmailService();
 	}
 }
