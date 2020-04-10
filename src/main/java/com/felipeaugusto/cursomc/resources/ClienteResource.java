@@ -21,48 +21,48 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.felipeaugusto.cursomc.domain.Cliente;
 import com.felipeaugusto.cursomc.dto.ClienteDTO;
 import com.felipeaugusto.cursomc.dto.ClienteNewDTO;
-import com.felipeaugusto.cursomc.services.ClienteServices;
+import com.felipeaugusto.cursomc.services.ClienteService;
 
 @RestController
 @RequestMapping(value = "/clientes")
 public class ClienteResource {
 
 	@Autowired
-	private ClienteServices clienteServices;
+	private ClienteService clienteService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> findClienteById(@PathVariable Integer id) {
-		Cliente c = clienteServices.find(id);
+		Cliente c = clienteService.find(id);
 		return ResponseEntity.ok().body(c);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO cliente) {
-		Cliente cli = clienteServices.fromDTO(cliente);
-		cli = clienteServices.insert(cli);
+		Cliente cli = clienteService.fromDTO(cliente);
+		cli = clienteService.insert(cli);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cli.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO cliente, @PathVariable Integer id) {
-		Cliente cli = clienteServices.fromDTO(cliente);
+		Cliente cli = clienteService.fromDTO(cliente);
 		cli.setId(id);
-		cli = clienteServices.update(cli);
+		cli = clienteService.update(cli);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Cliente> delete(@PathVariable Integer id) {
-		clienteServices.delete(id);
+		clienteService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll() {
-		List<Cliente> c = clienteServices.findAll();
+		List<Cliente> c = clienteService.findAll();
 		List<ClienteDTO> Cliente = c.stream().map(cli -> new ClienteDTO(cli)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(Cliente);
 	}
@@ -73,7 +73,7 @@ public class ClienteResource {
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Cliente> c = clienteServices.findPage(page, linesPerPage, orderBy, direction);
+		Page<Cliente> c = clienteService.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> Cliente = c.map(cli -> new ClienteDTO(cli));
 		return ResponseEntity.ok().body(Cliente);
 	}
