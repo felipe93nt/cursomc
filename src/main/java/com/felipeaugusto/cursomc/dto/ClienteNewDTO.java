@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.felipeaugusto.cursomc.services.validation.ClienteInsert;
 
 @ClienteInsert
@@ -46,7 +47,11 @@ public class ClienteNewDTO implements Serializable {
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
-
+	
+	@JsonIgnore
+	@NotEmpty(message = "Campo de preenchimento obrigatório.")
+	private String senha;
+	
 	private Integer cidadeId;
 
 	public ClienteNewDTO() {
@@ -116,7 +121,15 @@ public class ClienteNewDTO implements Serializable {
 	public void setBairro(String bairro) {
 		this.bairro = bairro;
 	}
+	
+	public String getSenha() {
+		return senha;
+	}
 
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
 	public String getCep() {
 		return cep;
 	}
